@@ -36,7 +36,24 @@ activation2=activation_relu()
 activation2.forward(layer2.output)
 print(activation2.output)
 
+class activation_softmax:
+  def forward(self,inputs):
+    exp_values=np.exp(inputs-np.max(inputs,axis=1,keepdims=True))
+    probabilities=exp_values/np.sum(exp_values,axis=1,keepdims=True)
+    self.output=probabilities
 
+layer1=dense_layer(4,10)
+layer2=dense_layer(10,8)
+layer1.forward(inputs)
+activation=activation_softmax()
+activation.forward(layer1.output)
+layer2.forward(activation.output)
+activation2=activation_softmax()
+activation2.forward(layer2.output)
+print(activation2.output)
+
+
+#Normalisation in general
 layer1=dense_layer(4,10)
 layer2=dense_layer(10,8)
 layer1.forward(inputs)
@@ -47,4 +64,15 @@ activation2=np.exp(layer2.output)
 activation2=activation2/sum(activation2)
 print(activation2)
 
+exp_values=np.exp(inputs)
+exp_values=exp_values/np.sum(exp_values,axis=1,keepdims=True)
+
+import math
+
+softmax_output=[0.7,0.1,0.2]
+one_hot_endcoding=[1,0,0]
+loss=0
+for i in range (3):
+  loss+=((one_hot_endcoding[i])*math.log(softmax_output[i]))
+print(-loss)
 
